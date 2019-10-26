@@ -34,13 +34,14 @@ public class GameStore {
             }
             g.setColor(Color.blue);
             g.drawRect(button_store[i].x, button_store[i].y, button_store[i].width, button_store[i].height);
-            g.setColor(Color.red);
-            g.drawRect(button_heart.x, button_heart.y, button_heart.width, button_heart.height);
-            g.drawRect(button_coins.x, button_coins.y, button_coins.width, button_coins.height);
-            g.setFont(new Font(Font.DIALOG, Font.BOLD, 15));
-            g.setColor(Color.white);
-            g.drawString("" + heart, button_heart.x + size_of_button_store/2 + 5, button_heart.y + 15);
-            g.drawString("" + coins, button_coins.x + size_of_button_store/2 + 5, button_coins.y + 15);
         }
+
+        g.setColor(Color.red);
+        g.drawRect(button_heart.x, button_heart.y, button_heart.width, button_heart.height);
+        g.drawRect(button_coins.x, button_coins.y, button_coins.width, button_coins.height);
+        g.setFont(new Font(Font.DIALOG, Font.BOLD, 15));
+        g.setColor(Color.white);
+        g.drawString("" + heart, button_heart.x + size_of_button_store/2 + 5, button_heart.y + 15);
+        g.drawString("" + coins, button_coins.x + size_of_button_store/2 + 5, button_coins.y + 15);
     }
 }

@@ -12,7 +12,12 @@ public class EventHandling implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        if (thread_main.isAlive()) {
+            mainScreen.eventClick(e.getClickCount());
+        }
+        if (thread_stage.isAlive()) {
+            gameStage.eventClick(e.getClickCount());
+        }
     }
 
     @Override
@@ -43,7 +48,7 @@ public class EventHandling implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        p = new Point(e.getX(), e.getY() - (frame.getHeight()-gameStage.getHeight()));
+        p = new Point(e.getX(), e.getY());
 
     }
 }

@@ -16,15 +16,14 @@ public class Config {
 
     public static GameStage gameStage;
 
-    public static JButton buttonStart;
-    public static JButton buttonContinue;
-    public static Rectangle rectButtonStart = new Rectangle(225,350,120,50);
-    public static Rectangle rectButtonContinue = new Rectangle(420, 350, 120, 50);
+    public static Rectangle buttonStart;
+    public static Rectangle buttonContinue;
 
     public static GameField gameField;
     public static GameStore gameStore;
 
-    public static Thread thread;
+    public static Thread thread_main;
+    public static Thread thread_stage;
 
     public final static int block_size = 40;
     public final static int field_width = 20;
@@ -43,6 +42,7 @@ public class Config {
     public static Rectangle[] button_store;
     public static Rectangle button_heart;
     public static Rectangle button_coins;
+    public static Rectangle button_menu;
 
     public final static int numbers_of_tower = 3;
     public final static int space_of_buttons = 5;
@@ -50,5 +50,8 @@ public class Config {
 
     public static Point p = new Point(0, 0);
 
-
+    public static Image img_khung;
+    public static Image img_start;
+    public static Image img_continue;
+    public static Image img_menu;
 }
