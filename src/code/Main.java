@@ -31,8 +31,9 @@ public class Main extends JPanel implements Runnable{
         this.setBounds(0, 0, frame.getSize().width, frame.getSize().height);
         this.setLayout(null);
         this.setVisible(true);
-        this.addMouseListener(new EventHandling());
-        this.addMouseMotionListener(new EventHandling());
+        main_EH = new EventHandling();
+        this.addMouseListener(main_EH);
+        this.addMouseMotionListener(main_EH);
 
         buttonStart = new Rectangle(225,350,120,50);
         buttonContinue = new Rectangle(420, 350, 120, 50);
@@ -74,11 +75,14 @@ public class Main extends JPanel implements Runnable{
     public void eventClick(int flag) {
         if (flag == 1) {
             if (buttonStart.contains(p)) {
+                if (thread_stage != null) thread_stage.stop();
                 this.setVisible(false);
+                thread_main.suspend();
                 frame.add(new GameStage());
             }
             if (buttonContinue.contains(p)) {
                 this.setVisible(false);
+                thread_main.suspend();
                 if (gameStage == null) {
                     frame.add(new GameStage());
                 } else {

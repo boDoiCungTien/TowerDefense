@@ -1,5 +1,7 @@
 package code.GameEnity;
 
-public class Bullet{
+import java.awt.*;
+
+public class Bullet extends Rectangle implements GameEnity {
 
 }

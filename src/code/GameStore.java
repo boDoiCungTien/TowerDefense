@@ -1,5 +1,9 @@
 package code;
 
+import code.GameEnity.GameTile.Tower.MachineGunTower;
+import code.GameEnity.GameTile.Tower.NormalTower;
+import code.GameEnity.GameTile.Tower.SniperTower;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.ImageObserver;
@@ -29,11 +33,10 @@ public class GameStore {
     public void draw(Graphics g) {
         g.setColor(Color.black);
         for (int i = 0; i < numbers_of_tower; ++i) {
-            if (button_store[i].contains(p)) {
-                g.drawImage(image, button_store[i].x, button_store[i].y, button_store[i].width, button_store[i].height, null);
+            g.fillRect(button_store[i].x, button_store[i].y, button_store[i].width, button_store[i].height);
+            if (coins >= price[i]) {
+                g.drawImage(img_Tower[i], button_store[i].x, button_store[i].y, button_store[i].width, button_store[i].height, null);
             }
-            g.setColor(Color.blue);
-            g.drawRect(button_store[i].x, button_store[i].y, button_store[i].width, button_store[i].height);
         }
 
         g.setColor(Color.red);

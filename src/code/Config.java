@@ -2,9 +2,13 @@ package code;
 
 import code.GameEnity.GameTile.Mountain;
 import code.GameEnity.GameTile.Road;
+import code.GameEnity.GameTile.Tower.MachineGunTower;
+import code.GameEnity.GameTile.Tower.NormalTower;
+import code.GameEnity.GameTile.Tower.SniperTower;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Config {
@@ -54,4 +58,22 @@ public class Config {
     public static Image img_start;
     public static Image img_continue;
     public static Image img_menu;
+
+    public static Image[] img_Tower = new Image[numbers_of_tower];
+    public static final int[] price = {500, 3000, 10000};
+
+
+
+    public static List<NormalTower> normalTowers = new ArrayList<NormalTower>();
+    public static List<SniperTower> sniperTowers = new ArrayList<SniperTower>();
+    public static List<MachineGunTower> machineGunTowers = new ArrayList<MachineGunTower>();
+
+    public static EventHandling main_EH;
+    public static EventHandling stage_EH;
+
+    public static int temp = -1;
+    public static Rectangle button_temp;
+
+    public static boolean can_put = false;
+    public static Rectangle button_put;
 }
