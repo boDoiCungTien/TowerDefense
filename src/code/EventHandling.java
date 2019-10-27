@@ -30,6 +30,8 @@ public class EventHandling implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        p.x = e.getX();
+        p.y = e.getY();
         if (gameStage != null && gameStage.isVisible()) {
             gameStage.eventReleased(e);
         }

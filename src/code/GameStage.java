@@ -36,6 +36,7 @@ public class GameStage extends JPanel implements Runnable{
 
         button_menu = new Rectangle(0, 0, 2*menu_size, menu_size);
 
+        img_menu0 = new ImageIcon("Image/buttonmenu0.png").getImage();
         img_menu = new ImageIcon("Image/buttonmenu.png").getImage();
         img_Tower[0] = new ImageIcon("Image/Nomar.png").getImage();
         img_Tower[1] = new ImageIcon("Image/Sniper.png").getImage();
@@ -52,7 +53,8 @@ public class GameStage extends JPanel implements Runnable{
 
         g.setColor(Color.GRAY);
         g.fillRect(0, 0, this.getSize().width, this.getSize().height);
-        g.drawImage(img_menu, button_menu.x, button_menu.y, button_menu.width, button_menu.height, null);
+        g.drawImage(img_menu0, button_menu.x, button_menu.y, button_menu.width, button_menu.height, null);
+        if (button_menu.contains(p)) g.drawImage(img_menu, button_menu.x, button_menu.y, button_menu.width, button_menu.height, null);
         gameField.draw(g);
         gameStore.draw(g);
 

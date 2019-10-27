@@ -38,9 +38,11 @@ public class Main extends JPanel implements Runnable{
         buttonStart = new Rectangle(225,350,120,50);
         buttonContinue = new Rectangle(420, 350, 120, 50);
 
-        img_khung = new ImageIcon("Image/khung.png").getImage();
+
         img_start = new ImageIcon("Image/buttonstart.png").getImage();
+        img_start0 = new ImageIcon("Image/buttonstart0.png").getImage();
         img_continue = new ImageIcon("Image/buttoncontinue.png").getImage();
+        img_continue0 = new ImageIcon("Image/buttoncontinue0.png").getImage();
 
 
         frame.add(this);
@@ -53,10 +55,10 @@ public class Main extends JPanel implements Runnable{
         g.drawImage(img_start, buttonStart.x, buttonStart.y, buttonStart.width, buttonStart.height, null);
         g.drawImage(img_continue, buttonContinue.x, buttonContinue.y, buttonContinue.width, buttonContinue.height, null);
         if (!buttonStart.contains(p)) {
-            g.drawImage(img_khung, buttonStart.x, buttonStart.y, buttonStart.width, buttonStart.height, null);
+            g.drawImage(img_start0, buttonStart.x, buttonStart.y, buttonStart.width, buttonStart.height, null);
         }
         if (!buttonContinue.contains(p)) {
-            g.drawImage(img_khung, buttonContinue.x, buttonContinue.y, buttonContinue.width, buttonContinue.height, null);
+            g.drawImage(img_continue0, buttonContinue.x, buttonContinue.y, buttonContinue.width, buttonContinue.height, null);
         }
     }
 

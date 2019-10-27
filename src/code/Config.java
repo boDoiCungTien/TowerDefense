@@ -54,9 +54,11 @@ public class Config {
 
     public static Point p = new Point(0, 0);
 
-    public static Image img_khung;
+    public static Image img_start0;
     public static Image img_start;
+    public static Image img_continue0;
     public static Image img_continue;
+    public static Image img_menu0;
     public static Image img_menu;
 
     public static Image[] img_Tower = new Image[numbers_of_tower];
