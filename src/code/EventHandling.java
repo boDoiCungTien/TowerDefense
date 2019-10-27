@@ -1,8 +1,5 @@
 package code;
 
-import code.GameEnity.GameTile.Tower.NormalTower;
-
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -14,26 +11,26 @@ public class EventHandling implements MouseListener, MouseMotionListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         if (mainScreen.isVisible())
-            mainScreen.eventClick(e.getButton());
+            mainScreen.eventClick();
         if (gameStage != null && gameStage.isVisible())
-            gameStage.eventClick(e.getButton());
+            gameStage.eventClick();
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        p.x = e.getX();
-        p.y = e.getY();
+        p_mouse.x = e.getX();
+        p_mouse.y = e.getY();
         if (gameStage != null && gameStage.isVisible()) {
-            gameStage.eventPressed(e);
+            gameStage.eventPressed();
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        p.x = e.getX();
-        p.y = e.getY();
+        p_mouse.x = e.getX();
+        p_mouse.y = e.getY();
         if (gameStage != null && gameStage.isVisible()) {
-            gameStage.eventReleased(e);
+            gameStage.eventReleased();
         }
 
     }
@@ -50,17 +47,17 @@ public class EventHandling implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        p.x = e.getX();
-        p.y = e.getY();
+        p_mouse.x = e.getX();
+        p_mouse.y = e.getY();
         if (gameStage != null && gameStage.isVisible()) {
-            gameStage.eventDragged(e);
+            gameStage.eventDragged();
         }
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        p.x = e.getX();
-        p.y = e.getY();
+        p_mouse.x = e.getX();
+        p_mouse.y = e.getY();
 
     }
 }

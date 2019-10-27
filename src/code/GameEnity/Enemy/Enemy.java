@@ -1,5 +1,7 @@
 package code.GameEnity.Enemy;
 
-public interface Enemy {
+import code.GameEnity.GameEnity;
+
+public interface Enemy extends GameEnity {
 
 }

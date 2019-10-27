@@ -3,8 +3,6 @@ package code;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import static code.Config.*;
 
@@ -54,10 +52,10 @@ public class Main extends JPanel implements Runnable{
         g.drawImage(i, 0, 0, this.getWidth(), this.getHeight(), this);
         g.drawImage(img_start, buttonStart.x, buttonStart.y, buttonStart.width, buttonStart.height, null);
         g.drawImage(img_continue, buttonContinue.x, buttonContinue.y, buttonContinue.width, buttonContinue.height, null);
-        if (!buttonStart.contains(p)) {
+        if (!buttonStart.contains(p_mouse)) {
             g.drawImage(img_start0, buttonStart.x, buttonStart.y, buttonStart.width, buttonStart.height, null);
         }
-        if (!buttonContinue.contains(p)) {
+        if (!buttonContinue.contains(p_mouse)) {
             g.drawImage(img_continue0, buttonContinue.x, buttonContinue.y, buttonContinue.width, buttonContinue.height, null);
         }
     }
@@ -74,25 +72,22 @@ public class Main extends JPanel implements Runnable{
         }
     }
 
-    public void eventClick(int flag) {
-        if (flag == 1) {
-            if (buttonStart.contains(p)) {
-                if (thread_stage != null) thread_stage.stop();
-                this.setVisible(false);
-                thread_main.suspend();
+    public void eventClick() {
+        if (buttonStart.contains(p_mouse)) {
+            if (thread_stage != null) thread_stage.stop();
+            this.setVisible(false);
+            thread_main.suspend();
+            frame.add(new GameStage());
+        }
+        if (buttonContinue.contains(p_mouse)) {
+            this.setVisible(false);
+            thread_main.suspend();
+            if (gameStage == null) {
                 frame.add(new GameStage());
+            } else {
+                gameStage.setVisible(true);
+                thread_stage.resume();
             }
-            if (buttonContinue.contains(p)) {
-                this.setVisible(false);
-                thread_main.suspend();
-                if (gameStage == null) {
-                    frame.add(new GameStage());
-                } else {
-                    gameStage.setVisible(true);
-                    thread_stage.resume();
-                }
-            }
-
         }
     }
 

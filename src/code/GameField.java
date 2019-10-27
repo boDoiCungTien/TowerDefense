@@ -3,7 +3,6 @@ package code;
 import code.GameEnity.GameTile.Mountain;
 import code.GameEnity.GameTile.Road;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 

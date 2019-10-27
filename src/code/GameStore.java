@@ -1,18 +1,11 @@
 package code;
 
-import code.GameEnity.GameTile.Tower.MachineGunTower;
-import code.GameEnity.GameTile.Tower.NormalTower;
-import code.GameEnity.GameTile.Tower.SniperTower;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 
 import static code.Config.*;
 
 public class GameStore {
-    public Image image, img;
     public GameStore() {
         init();
     }
