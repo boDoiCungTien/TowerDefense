@@ -1,5 +1,7 @@
 package code.GameEnity;
 
-public interface GameEnity {
+import java.awt.*;
 
+public interface GameEnity {
+    public void draw(Graphics g);
 }

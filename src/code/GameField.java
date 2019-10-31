@@ -1,7 +1,13 @@
 package code;
 
+import code.GameEnity.Bullet;
+import code.GameEnity.Enemy.Enemy;
+import code.GameEnity.Enemy.NormalEnemy;
 import code.GameEnity.GameTile.Mountain;
-import code.GameEnity.GameTile.Road;
+import code.GameEnity.GameTile.road.Road;
+import code.GameEnity.GameTile.Tower.Tower;
+import code.GameEnity.GameTile.road.Spawner;
+import code.GameEnity.GameTile.road.Target;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -15,27 +21,40 @@ public class GameField {
 
     public void init() {
         road = new ArrayList<Road>();
+        spawners = new ArrayList<Spawner>();
+        targets = new ArrayList<Target>();
         mountain = new ArrayList<Mountain>();
-        new LoadMission("Map/mission1.txt");
-
-        for (int i = 0; i < field_height; ++i) {
-            for (int j = 0; j < field_width; ++j) {
-                if (map[i][j] == 0) {
-                    mountain.add(new Mountain(j*block_size, i*block_size + menu_size, block_size, block_size));
-                } else if (map[i][j] == 1) {
-                    road.add(new Road(j*block_size, i*block_size + menu_size, block_size, block_size));
-                }
-            }
-        }
+        towers = new ArrayList<Tower>();
+        enemies = new ArrayList<Enemy>();
+        bullets = new ArrayList<Bullet>();
+        loadMission = new LoadMission("Map/mission1.txt");
+        gameStore = new GameStore();
 
     }
 
     public void draw(Graphics g) {
+        for (int i = 0; i < mountain.size(); ++i) {
+            mountain.get(i).draw(g);
+        }
         for (int i = 0; i < road.size(); ++i) {
             road.get(i).draw(g);
         }
-        for (int j = 0; j < mountain.size(); ++j) {
-            mountain.get(j).draw(g);
+        for (int i = 0; i < targets.size(); ++i) {
+            targets.get(i).draw(g);
         }
+        for (int i = 0; i < spawners.size(); ++i) {
+            spawners.get(i).draw(g);
+        }
+        for (int i = 0; i < towers.size(); ++i) {
+            towers.get(i).draw(g);
+        }
+        for (int i = 0; i < enemies.size(); ++i) {
+            enemies.get(i).draw(g);
+        }
+        for (int i = 0; i < bullets.size(); ++i) {
+            bullets.get(i).draw(g);
+        }
+
+        gameStore.draw(g);
     }
 }

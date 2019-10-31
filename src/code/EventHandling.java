@@ -11,26 +11,22 @@ public class EventHandling implements MouseListener, MouseMotionListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         if (mainScreen.isVisible())
-            mainScreen.eventClick();
+            mainScreen.eventMouseClick();
         if (gameStage != null && gameStage.isVisible())
-            gameStage.eventClick();
+            gameStage.eventMouseClick();
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        p_mouse.x = e.getX();
-        p_mouse.y = e.getY();
         if (gameStage != null && gameStage.isVisible()) {
-            gameStage.eventPressed();
+            gameStage.eventMousePressed();
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        p_mouse.x = e.getX();
-        p_mouse.y = e.getY();
         if (gameStage != null && gameStage.isVisible()) {
-            gameStage.eventReleased();
+            gameStage.eventMouseReleased();
         }
 
     }
@@ -50,7 +46,7 @@ public class EventHandling implements MouseListener, MouseMotionListener {
         p_mouse.x = e.getX();
         p_mouse.y = e.getY();
         if (gameStage != null && gameStage.isVisible()) {
-            gameStage.eventDragged();
+            gameStage.eventMouseDragged();
         }
     }
 

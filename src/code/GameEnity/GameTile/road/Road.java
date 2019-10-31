@@ -1,4 +1,6 @@
-package code.GameEnity.GameTile;
+package code.GameEnity.GameTile.road;
+
+import code.GameEnity.GameTile.GameTile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,15 +8,19 @@ import java.awt.*;
 import static code.Config.*;
 
 public class Road extends Rectangle implements GameTile{
-    public Road(int x, int y, int width, int height) {
+    private int id;
+    public Road() {};
+    public Road(int x, int y, int width, int height, int id) {
         img_road = new ImageIcon("Image/road.png").getImage();
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        this.setBounds(x, y, width, height);
+        this.id = id;
     }
 
     public void draw(Graphics g) {
             g.drawImage(img_road, x, y, width, height, null);
+    }
+
+    public int getId() {
+        return id;
     }
 }

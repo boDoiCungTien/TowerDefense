@@ -72,7 +72,7 @@ public class Main extends JPanel implements Runnable{
         }
     }
 
-    public void eventClick() {
+    public void eventMouseClick() {
         if (buttonStart.contains(p_mouse)) {
             if (thread_stage != null) thread_stage.stop();
             this.setVisible(false);

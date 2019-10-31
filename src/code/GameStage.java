@@ -4,6 +4,7 @@ package code;
 import code.GameEnity.GameTile.Tower.MachineGunTower;
 import code.GameEnity.GameTile.Tower.NormalTower;
 import code.GameEnity.GameTile.Tower.SniperTower;
+import code.GameEnity.GameTile.Tower.Tower;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +12,6 @@ import java.awt.*;
 import static code.Config.*;
 
 public class GameStage extends JPanel implements Runnable{
-    private boolean isFirst = true;
     public GameStage() {
         init();
     }
@@ -24,64 +24,48 @@ public class GameStage extends JPanel implements Runnable{
         this.addMouseListener(stage_EH);
         this.addMouseMotionListener(stage_EH);
         gameStage = this;
-        thread_stage = new Thread(this);
-        thread_stage.start();
 
-    }
-
-    public void define() {
         gameField = new GameField();
-        gameStore = new GameStore();
 
-        button_menu = new Rectangle(0, 0, 2*menu_size, menu_size);
-
+        button_menu = new Rectangle(0, 0, 2* SPACE_ABOVE, SPACE_ABOVE);
         img_menu0 = new ImageIcon("Image/buttonmenu0.png").getImage();
         img_menu = new ImageIcon("Image/buttonmenu.png").getImage();
-        img_Tower[0] = new ImageIcon("Image/NomarTower.png").getImage();
-        img_Tower[1] = new ImageIcon("Image/SniperTower.png").getImage();
-        img_Tower[2] = new ImageIcon("Image/MachineGunTower.png").getImage();
 
+        thread_stage = new Thread(this);
+        thread_stage.start();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        if (isFirst) {
-            define();
-            isFirst = false;
-        }
-
         g.setColor(Color.gray);
         g.fillRect(0, 0, this.getSize().width, this.getSize().height);
         g.drawImage(img_menu0, button_menu.x, button_menu.y, button_menu.width, button_menu.height, null);
-        if (button_menu.contains(p_mouse)) g.drawImage(img_menu, button_menu.x, button_menu.y, button_menu.width, button_menu.height, null);
-        gameField.draw(g);
-        gameStore.draw(g);
+        if (button_menu.contains(p_mouse))
+            g.drawImage(img_menu, button_menu.x, button_menu.y, button_menu.width, button_menu.height, null);
 
-        for (int i = 0; i < normalTowers.size(); ++i) {
-            normalTowers.get(i).draw(g);
-        }
-        for (int i = 0; i < sniperTowers.size(); ++i) {
-            sniperTowers.get(i).draw(g);
-        }
-        for (int i = 0; i < machineGunTowers.size(); ++i) {
-            machineGunTowers.get(i).draw(g);
-        }
+        gameField.draw(g);
 
         if (button_temp != null) {
             g.drawImage(img_Tower[temp], button_temp.x, button_temp.y, button_temp.width, button_temp.height, null);
+            g.drawOval(button_temp.x + TILE_SIZE /2 - RANGE[temp], button_temp.y + TILE_SIZE /2 - RANGE[temp], 2* RANGE[temp], 2* RANGE[temp]);
         }
 
         if (can_put) g.setColor(Color.green);
         else g.setColor(Color.red);
         if (button_put != null) {
-            g.drawRect(button_put.x-5, button_put.y-5, button_put.width+10, button_put.height+10);
+            g.drawRect(button_put.x-3, button_put.y-3, button_put.width+6, button_put.height+6);
         }
     }
 
     @Override
     public void run() {
-        while(!thread_stage.isInterrupted()) {
+        while(true) {
             coins++;
+
+            event_enemy_spawning();
+            event_create_bullets();
+            event_destroy_bullets();
+            event_enemy_to_target();
 
             repaint();
             try {
@@ -90,7 +74,57 @@ public class GameStage extends JPanel implements Runnable{
         }
     }
 
-    public void eventClick(){
+    public void event_create_bullets() {
+        for (int i = 0;i < towers.size(); ++i) {
+            for (int j = 0; j < enemies.size(); ++j) {
+                if (towers.get(i).inRange(enemies.get(j))) {
+                    towers.get(i).shoot(enemies.get(j));
+                    break;
+                }
+            }
+        }
+    }
+
+    public void event_destroy_bullets() {
+        for (int i = 0; i < bullets.size(); ++i) {
+            if (!bullets.get(i).exist()) {
+                bullets.remove(i);
+                --i;
+            }
+        }
+        for (int i = 0; i < enemies.size(); ++i) {
+            for (int j = 0; j < bullets.size(); ++j) {
+                if (enemies.get(i).contains((int)bullets.get(j).getX(), (int)bullets.get(j).getY())) {
+                    enemies.get(i).subtractBlood_(bullets.get(i).getDamage_());
+                    bullets.remove(j);
+                    --j;
+                }
+            }
+            if (enemies.get(i).getBlood_() <= 0) {
+                coins += enemies.get(i).getREWARD_();
+                enemies.remove(i);
+                --i;
+            }
+        }
+    }
+
+    public void event_enemy_spawning() {
+
+    }
+
+    public void event_enemy_to_target() {
+        for (int i = 0; i < targets.size(); ++i) {
+            for (int j = 0; j < enemies.size(); ++j) {
+                if (targets.get(i).contains((Rectangle) enemies.get(j))) {
+                    --heart;
+                    enemies.remove(j);
+                    --j;
+                }
+            }
+        }
+    }
+
+    public void eventMouseClick(){
         if (button_menu.contains(p_mouse.x, p_mouse.y)) {
             this.setVisible(false);
             mainScreen.setVisible(true);
@@ -99,26 +133,33 @@ public class GameStage extends JPanel implements Runnable{
         }
     }
 
-    public void eventPressed() {
+    public void eventMousePressed() {
         if (temp == -1) {
-            for (int i = 0; i < numbers_of_tower; ++i) {
-                if (coins<price[i]) continue;
+            for (int i = 0; i < TOWER_TYPES; ++i) {
+                if (coins< PRICE[i]) continue;
                 if (button_store[i].contains(p_mouse.x, p_mouse.y)) {
-                    button_temp = new Rectangle(button_store[i].getBounds());
+                    if (i == 0) {
+                        button_temp = new NormalTower();
+                    } else if (i == 1) {
+                        button_temp = new SniperTower();
+                    } else if (i == 2) {
+                        button_temp = new MachineGunTower();
+                    }
+                    button_temp.setBounds(button_store[i].getBounds());
                     temp = i;
                     break;
                 }
             }
         }
         if (button_temp != null) {
-            button_temp.setLocation(p_mouse.x - size_of_button_store/2, p_mouse.y - size_of_button_store/2);
+            button_temp.setLocation(p_mouse.x - BUTTON_STORE_SIZE /2, p_mouse.y - BUTTON_STORE_SIZE /2);
             repaint();
         }
     }
 
-    public void eventDragged() {
+    public void eventMouseDragged() {
         if (button_temp != null) {
-            button_temp.setLocation(p_mouse.x - size_of_button_store/2, p_mouse.y - size_of_button_store/2);
+            button_temp.setLocation(p_mouse.x - BUTTON_STORE_SIZE /2, p_mouse.y - BUTTON_STORE_SIZE /2);
             button_put = null;
             can_put = false;
             for (int i = 0; i < road.size(); ++i) {
@@ -139,19 +180,14 @@ public class GameStage extends JPanel implements Runnable{
         }
     }
 
-    public void eventReleased() {
+    public void eventMouseReleased() {
         if (temp != -1) {
             for (int i = 0; i < mountain.size(); ++i) {
                 if (mountain.get(i).contains(p_mouse.x, p_mouse.y) && can_put) {
-                    if (temp == 0) {
-                        normalTowers.add(new NormalTower(mountain.get(i).x, mountain.get(i).y, mountain.get(i).width, mountain.get(i).height));
-                    } else if (temp == 1) {
-                        sniperTowers.add(new SniperTower(mountain.get(i).x, mountain.get(i).y, mountain.get(i).width, mountain.get(i).height));
-                    } else if (temp == 2) {
-                        machineGunTowers.add(new MachineGunTower(mountain.get(i).x, mountain.get(i).y, mountain.get(i).width, mountain.get(i).height));
-                    }
+                    button_temp.setLocation(mountain.get(i).x, mountain.get(i).y);
+                    towers.add((Tower) button_temp);
                     mountain.get(i).setEmpty(false);
-                    coins -= price[temp];
+                    coins -= PRICE[temp];
                 }
             }
             button_put = null;
@@ -160,6 +196,4 @@ public class GameStage extends JPanel implements Runnable{
             temp = -1;
         }
     }
-
-
 }
