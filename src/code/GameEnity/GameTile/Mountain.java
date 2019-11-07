@@ -10,7 +10,7 @@ public class Mountain extends Rectangle implements GameTile {
 
     public Mountain(int x, int y, int width, int height) {
         empty = true;
-        img_mountain = new ImageIcon("Image/Game Stage.png").getImage();
+        img_mountain = new ImageIcon("Image/Mountain.png").getImage();
         this.setBounds(x, y, width, height);
     }
 

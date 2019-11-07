@@ -1,7 +1,6 @@
 package code.GameEnity.Enemy;
 
 import java.awt.*;
-import java.util.Random;
 
 import static code.Config.*;
 
@@ -9,14 +8,13 @@ public class NormalEnemy extends Rectangle implements Enemy {
     private int blood_ = BLOOD[NORMAL_ENEMY];
     private final int MAX_BLOOD_ = blood_;
     private final int ARMOR_ = ARMOR[NORMAL_ENEMY];
-    private final double SPEED_ = 0.15;
+    private final double SPEED_ = SPEED_ENEMIES[NORMAL_ENEMY];
     private final int REWARD_ = REWARD[NORMAL_ENEMY];
     private double x_;
     private double y_;
     private double dx_;
     private double dy_;
     private Point p_next;
-    private Random rd = new Random();
     private int points_appear = rd.nextInt(spawners.size());
 
     public NormalEnemy() {
@@ -28,17 +26,12 @@ public class NormalEnemy extends Rectangle implements Enemy {
 
     public void draw(Graphics g) {
         g.setColor(Color.red);
-        g.drawRect(x, y - 6, width*blood_/MAX_BLOOD_, 3);
+        g.drawRect(x, y - 6, width, 3);
         g.fillRect(x, y - 6, width*blood_/MAX_BLOOD_, 3);
-    /*    g.drawImage(img_Enemies[NORMAL_ENEMY], x, y, width, height, null);
+        g.drawImage(img_Enemies[NORMAL_ENEMY], x, y, width, height, null);
         if (!status_clicks[BUTTON_PAUSE]) {
             move();
         }
-
-     */
-        g.setColor(Color.BLUE);
-        g.fillRect(x, y, width, height);
-        move();
     }
 
     public void move() {
@@ -56,16 +49,16 @@ public class NormalEnemy extends Rectangle implements Enemy {
         dy_ = 0;
         int i = (p_next.y - SPACE_ABOVE - TILE_SIZE / 2) / TILE_SIZE;
         int j = (p_next.x - TILE_SIZE / 2) / TILE_SIZE;
-        if (i > 0 && map[i][j] > map[i - 1][j] && map[i - 1][j] != -1) {
+        if (i > 0 && map[i][j] > map[i - 1][j] && map[i - 1][j] != MOUNTAIN) {
             --i;
             dy_ = -SPEED_;
-        } else if (i < FIELD_ROWS - 1 && map[i][j] > map[i + 1][j] && map[i + 1][j] != -1) {
+        } else if (i < FIELD_ROWS - 1 && map[i][j] > map[i + 1][j] && map[i + 1][j] != MOUNTAIN) {
             ++i;
             dy_ = SPEED_;
-        } else if (j > 0 && map[i][j] > map[i][j - 1] && map[i][j - 1] != -1) {
+        } else if (j > 0 && map[i][j] > map[i][j - 1] && map[i][j - 1] != MOUNTAIN) {
             --j;
             dx_ = -SPEED_;
-        } else if (j < FIELD_COLUMNS - 1 && map[i][j] > map[i][j + 1] && map[i][j + 1] != -1) {
+        } else if (j < FIELD_COLUMNS - 1 && map[i][j] > map[i][j + 1] && map[i][j + 1] != MOUNTAIN) {
             ++j;
             dx_ = SPEED_;
         }

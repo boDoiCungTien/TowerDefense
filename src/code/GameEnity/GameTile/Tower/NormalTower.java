@@ -8,31 +8,39 @@ import java.awt.*;
 import static code.Config.*;
 
 public class NormalTower extends Rectangle implements Tower {
-    private final int SPEED_SHOOTING_ = SPEED_SHOOTING[0];
-    private int count_time_ = SPEED_SHOOTING_;
-    private final double SPEED_BULLET_ = SPEED_BULLETS[0];
-    private final int range_ = RANGE[0];
-    private final int DAMAGE_ = DAMAGE[0];
+    private final int DELAY_ = 300;
+    private int Counting_time_delay_ = 0;
+    private final int SPEED_SHOOTING_ = SPEED_SHOOTING[NORMAL_TOWER];
+    private int counting_time_shoot_ = SPEED_SHOOTING_ - DELAY_;
+    private final double SPEED_BULLET_ = SPEED_BULLETS[NORMAL_TOWER];
+    private final int range_ = RANGE[NORMAL_TOWER];
+    private final int DAMAGE_ = DAMAGE[NORMAL_TOWER];
+    private final int PRICE_ = PRICE[NORMAL_TOWER];
 
-    public NormalTower() { };
+    public NormalTower() {
+        status_sound_effects[BUILD] = true;
+    };
 
 
     public void draw(Graphics g) {
-        g.drawImage(img_Tower[0], x, y, width, height, null);
-        if (count_time_ < SPEED_SHOOTING_) count_time_++;
+        if (Counting_time_delay_ < DELAY_) {
+            g.drawImage(img_tower_building, x, y, width, height, null);
+            ++Counting_time_delay_;
+            return;
+        }
+        g.drawImage(img_Towers[NORMAL_TOWER], x, y, width, height, null);
+        if (counting_time_shoot_ < SPEED_SHOOTING_) counting_time_shoot_++;
     }
 
     public boolean inRange(Enemy enemy) {
         return ((int)Math.sqrt((this.x - enemy.getX())*(this.x - enemy.getX()) + (this.y - enemy.getY())*(this.y - enemy.getY())) <= range_);
     }
 
-
-
     public void shoot(Enemy enemy) {
-        if (count_time_ >= SPEED_SHOOTING_) {
+        if (counting_time_shoot_ >= SPEED_SHOOTING_) {
             Bullet bullet = new Bullet(this, enemy);
             bullets.add(bullet);
-            count_time_ = 0;
+            counting_time_shoot_ = 0;
         }
     }
 
@@ -47,4 +55,10 @@ public class NormalTower extends Rectangle implements Tower {
     public int getDAMAGE_() {
         return DAMAGE_;
     }
+
+    @Override
+    public int getPRICE_() {
+        return PRICE_;
+    }
+
 }
