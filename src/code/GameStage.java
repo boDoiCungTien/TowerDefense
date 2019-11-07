@@ -121,7 +121,7 @@ public class GameStage extends JPanel implements Runnable{
             create_bullets();
             destroy_bullets();
             event_enemy_to_target();
-            warning();
+            check_warning();
 
             if (status_clicks[BUTTON_AUTO]) {
                 AutoPlaying.auto_play();
@@ -139,7 +139,7 @@ public class GameStage extends JPanel implements Runnable{
         }
     }
 
-    public void warning() {
+    public void check_warning() {
         for (int i = 0; i < enemies.size(); ++i) {
             for (int j = 0; j < 3; ++j) {
                 if (road.get(j).contains(enemies.get(i).getCenterX(), enemies.get(i).getCenterY())) {
@@ -179,6 +179,15 @@ public class GameStage extends JPanel implements Runnable{
             if (enemies.get(i).getBlood_() <= 0) {
                 coin += enemies.get(i).getREWARD_();
                 status_sound_effects[DIE] = true;
+                if (enemies.get(i) instanceof NormalEnemy) {
+                    score += 1;
+                } else if (enemies.get(i) instanceof TankerEnemy) {
+                    score += 3;
+                } else if (enemies.get(i) instanceof SmallerEnemy) {
+                    score += 2;
+                } else if (enemies.get(i) instanceof BossEnemy) {
+                    score += 5;
+                }
                 enemies.remove(i);
                 ++kill;
                 --i;
