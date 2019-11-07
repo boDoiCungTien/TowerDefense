@@ -1,125 +1,89 @@
 package code.GameEnity.Enemy;
 
-import javafx.stage.Screen;
-
-import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
+
 import static code.Config.*;
-public abstract class NormalEnemy extends Rectangle implements Enemy {
-    private int armor;
-    private int speedRunning;
-    private int blood;
-    private int bonusCoins;
-    private int upward = 0 , downward = 1, right = 2, left = 3;
-    private int  direction = right;
-    private boolean hasUpWard = false;
-    private boolean hasDownWard = false;
-    private boolean hasRight = false;
-    private boolean hasLeft = false;
-    public int getArmor() {
-        return armor;
+
+public class NormalEnemy extends Rectangle implements Enemy {
+    private int blood_ = BLOOD[NORMAL_ENEMY];
+    private final int MAX_BLOOD_ = blood_;
+    private final int ARMOR_ = ARMOR[NORMAL_ENEMY];
+    private final double SPEED_ = 0.15;
+    private final int REWARD_ = REWARD[NORMAL_ENEMY];
+    private double x_;
+    private double y_;
+    private double dx_;
+    private double dy_;
+    private Point p_next;
+    private Random rd = new Random();
+    private int points_appear = rd.nextInt(spawners.size());
+
+    public NormalEnemy() {
+        setBounds(spawners.get(points_appear).x + (TILE_SIZE - ENEMIES_SIZE[NORMAL_ENEMY]) / 2, spawners.get(points_appear).y + (TILE_SIZE - ENEMIES_SIZE[NORMAL_ENEMY]) / 2, ENEMIES_SIZE[NORMAL_ENEMY], ENEMIES_SIZE[NORMAL_ENEMY]);
+        x_ = x;
+        y_ = y;
+        p_next = new Point(spawners.get(points_appear).x + TILE_SIZE / 2, spawners.get(points_appear).y + TILE_SIZE / 2);
     }
 
-    public void setArmor(int armor) {
-        this.armor = armor;
+    public void draw(Graphics g) {
+        g.setColor(Color.red);
+        g.drawRect(x, y - 6, width*blood_/MAX_BLOOD_, 3);
+        g.fillRect(x, y - 6, width*blood_/MAX_BLOOD_, 3);
+    /*    g.drawImage(img_Enemies[NORMAL_ENEMY], x, y, width, height, null);
+        if (!status_clicks[BUTTON_PAUSE]) {
+            move();
+        }
+
+     */
+        g.setColor(Color.BLUE);
+        g.fillRect(x, y, width, height);
+        move();
     }
 
-    public int getSpeedRunning() {
-        return speedRunning;
+    public void move() {
+        if (p_next.x == x + width / 2 && p_next.y == y + height / 2) {
+            determine_p_next();
+        }
+        x_ += dx_;
+        y_ += dy_;
+        x = (int) x_;
+        y = (int) y_;
     }
 
-    public void setSpeedRunning(int speedRunning) {
-        this.speedRunning = speedRunning;
+    public void determine_p_next() {
+        dx_ = 0;
+        dy_ = 0;
+        int i = (p_next.y - SPACE_ABOVE - TILE_SIZE / 2) / TILE_SIZE;
+        int j = (p_next.x - TILE_SIZE / 2) / TILE_SIZE;
+        if (i > 0 && map[i][j] > map[i - 1][j] && map[i - 1][j] != -1) {
+            --i;
+            dy_ = -SPEED_;
+        } else if (i < FIELD_ROWS - 1 && map[i][j] > map[i + 1][j] && map[i + 1][j] != -1) {
+            ++i;
+            dy_ = SPEED_;
+        } else if (j > 0 && map[i][j] > map[i][j - 1] && map[i][j - 1] != -1) {
+            --j;
+            dx_ = -SPEED_;
+        } else if (j < FIELD_COLUMNS - 1 && map[i][j] > map[i][j + 1] && map[i][j + 1] != -1) {
+            ++j;
+            dx_ = SPEED_;
+        }
+        p_next.x = j * TILE_SIZE + TILE_SIZE / 2;
+        p_next.y = i * TILE_SIZE + TILE_SIZE / 2 + SPACE_ABOVE;
     }
 
-    public int getBlood() {
-        return blood;
-    }
-
-    public void setBlood(int blood) {
-        this.blood = blood;
-    }
-
-    public int getBonusCoins() {
-        return bonusCoins;
-    }
-
-    public void setBonusCoins(int bonusCoins) {
-        this.bonusCoins = bonusCoins;
-    }
-
-    public NormalEnemy(int x , int y, int width, int height, int armor, int speedRunning, int blood, int bonusCoins){
-        this.armor = armor;
-        this.blood = blood;
-        this.bonusCoins = bonusCoins;
-        this.speedRunning = speedRunning;
-        for(int i = 0; i < field_width; i++){
-            if(map[i][0]==1){
-                x = i;
-                y = field_height;
-                setBounds(x, y, width, height);
-            }
+    public void subtractBlood_(int damage) {
+        if (damage > ARMOR_) {
+            this.blood_ -= (damage - ARMOR_);
         }
     }
-//    public boolean passable(int[][] map, int field_height, int field_width, int x, int y){
-//        return (x >= 0 && x < field_width && y >= 0 && y < field_height && map[y][x] == 1;
-//    }
-    public boolean move(){
-        if(direction == right){
-            x+=1;
-            hasRight = true;
-        }
-        else if(direction == left){
-            x-=1;
-            hasLeft = true;
-        }
-        else if(direction == upward){
-            y-=1;
-            hasUpWard = true;
-        }
-        else if(direction == downward){
-            y+=1;
-            hasDownWard = true;
-        }
-        if(!hasDownWard){
-            try{
-                if(map[y-1][x] == 1){
-                    direction = upward;
-                }
-            } catch (Exception e)
-        }
-        if(!hasUpWard){
-            try{
-                if(map[y+1][x] == 1) {
-                    direction = downward;
-                }
-            }catch (Exception e);
-        }
-        if(!hasRight){
-            try{
-                if(map[y][x-1] == 1){
-                    direction = left;
-                }
-            }catch (Exception e);
-        }
-        if(!hasLeft){
-            try{
-                if(map[y][x+1] == 1){
-                    direction = right;
-                }
-            }catch (Exception e);
-        }
-    }
-    public void beAttackedByNormalTower(){
 
+    public int getBlood_() {
+        return blood_;
     }
 
-    public void beAttackedBySniperTower(){
-
+    public int getREWARD_() {
+        return REWARD_;
     }
-
-    public void beAttackedbyGunTower(){
-
-    }
-    public void draw (Graphics g){g.drawImage(img_Enemy[0],x,y,width,height,null);}
 }
