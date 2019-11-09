@@ -26,8 +26,4 @@ public class Road extends Rectangle implements GameTile, Comparable<Road> {
         else if (this.id > other.id) return 1;
         else return -1;
     }
-
-    public int getId() {
-        return id;
-    }
 }

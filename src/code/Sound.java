@@ -1,8 +1,6 @@
 package code;
 
 import javazoom.jl.player.Player;
-
-import java.awt.*;
 import java.io.FileInputStream;
 
 import static code.Config.*;

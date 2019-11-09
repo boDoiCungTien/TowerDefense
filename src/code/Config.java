@@ -45,8 +45,8 @@ public class Config {
     public final static int SMALLER_ENEMY = 2;
     public final static int BOSS_ENEMY = 3;
     public final static int ENEMY_TYPES = 4;
-    public final static int[] BLOOD = {100, 300, 120, 750};
-    public final static int[] ARMOR = {2, 8, 5, 12};
+    public final static int[] BLOOD = {120, 300, 100, 750};
+    public final static int[] ARMOR = {5, 8, 3, 12};
     public final static int[] REWARD = {50, 150, 100, 400};
     public final static double[] SPEED_ENEMIES = {0.05, 0.035, 0.1, 0.025};
     public final static int[] ENEMIES_SIZE = {20, 30, 30, 40};    //chia het cho 2
